@@ -1,21 +1,35 @@
 --TEST--
 Check for sqreen presence
+--INI--
+;disable warning output(fopens)
+display_errors=Off
+;log error on output
+error_log=
 --SKIPIF--
 <?php if (!extension_loaded("sqreen")) print "skip"; ?>
 --FILE--
 <?php 
-echo "sqreen extension is available";
-/*
-	you can add regression tests for your extension here
+echo "sqreen extension is available\n";
+// No log
+$infile = fopen("test.text", "r"); //or die("Unable to open file!");
+echo fread($infile,filesize("test.text"));
+fclose($infile);
 
-  the output of your test code has to be equal to the
-  text in the --EXPECT-- section below for the tests
-  to pass, differences between the output and the
-  expected text are interpreted as failure
+// Log
+sqreenon();
+$infile = fopen("test.text", "r"); // or die("Unable to open file!");
+echo fread($infile,filesize("test.text"));
+fclose($infile);
 
-	see php7/README.TESTING for further information on
-  writing regression tests
-*/
+$infile = fopen("test.text", "z"); // or die("Unable to open file!");
+echo fread($infile,filesize("test.text"));
+fclose($infile);
+
+// No log
+sqreenoff();
+$infile = fopen("test.text", "r"); // or die("Unable to open file!");
 ?>
 --EXPECT--
 sqreen extension is available
+fopen(test.text, r[, 0, 0])
+fopen(test.text, z[, 0, 0])
