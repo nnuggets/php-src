@@ -103,6 +103,24 @@ PHP_MINFO_FUNCTION(sqreen)
 }
 /* }}} */
 
+/* {{{ PHP_GINIT_FUNCTION
+*/
+PHP_GINIT_FUNCTION(sqreen)
+{
+#if defined(COMPILE_DL_SQREEN) && defined(ZTS)
+	ZEND_TSRMLS_CACHE_UPDATE();
+#endif
+	sqreen_globals->enable = 0;
+}
+/* }}} */
+
+/* {{{ PHP_GSHUTDOWN_FUNCTION
+*/
+PHP_GSHUTDOWN_FUNCTION(sqreen)
+{
+	sqreen_globals->enable = 0;
+}
+
 /* sqreen_fopen is the overloading function of the standard fopen function
  */
 /* {{{ PHP_NAMED_FUNCTION(sqreen_fopen)
@@ -228,7 +246,11 @@ zend_module_entry sqreen_module_entry = {
 	PHP_RSHUTDOWN(sqreen),	/* Replace with NULL if there's nothing to do at request end */
 	PHP_MINFO(sqreen),
 	PHP_SQREEN_VERSION,
-	STANDARD_MODULE_PROPERTIES
+	PHP_MODULE_GLOBALS(sqreen),
+	PHP_GINIT(sqreen),
+	PHP_GSHUTDOWN(sqreen),
+	NULL,
+	STANDARD_MODULE_PROPERTIES_EX
 };
 /* }}} */
 

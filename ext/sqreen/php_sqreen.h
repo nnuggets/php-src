@@ -21,10 +21,11 @@
 #ifndef PHP_SQREEN_H
 #define PHP_SQREEN_H
 
+#include "php_version.h"
+#define PHP_SQREEN_VERSION PHP_VERSION /* Replace with version number for your extension */
+
 extern zend_module_entry sqreen_module_entry;
 #define phpext_sqreen_ptr &sqreen_module_entry
-
-#define PHP_SQREEN_VERSION "0.1.0" /* Replace with version number for your extension */
 
 #ifdef PHP_WIN32
 #	define PHP_SQREEN_API __declspec(dllexport)
@@ -37,10 +38,6 @@ extern zend_module_entry sqreen_module_entry;
 #ifdef ZTS
 #include "TSRM.h"
 #endif
-
-PHP_FUNCTION(sqreenon);
-PHP_FUNCTION(sqreenoff);
-PHP_NAMED_FUNCTION(sqreen_fopen);
 
 typedef struct _overloading_table {
 	const char *fname;
@@ -67,6 +64,10 @@ ZEND_END_MODULE_GLOBALS(sqreen)
 #if defined(ZTS) && defined(COMPILE_DL_SQREEN)
 ZEND_TSRMLS_CACHE_EXTERN()
 #endif
+
+PHP_FUNCTION(sqreenon);
+PHP_FUNCTION(sqreenoff);
+PHP_NAMED_FUNCTION(sqreen_fopen);
 
 #endif	/* PHP_SQREEN_H */
 
