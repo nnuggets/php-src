@@ -28,11 +28,11 @@ extern zend_module_entry sqreen_module_entry;
 #define phpext_sqreen_ptr &sqreen_module_entry
 
 #ifdef PHP_WIN32
-#	define PHP_SQREEN_API __declspec(dllexport)
+#   define PHP_SQREEN_API __declspec(dllexport)
 #elif defined(__GNUC__) && __GNUC__ >= 4
-#	define PHP_SQREEN_API __attribute__ ((visibility("default")))
+#   define PHP_SQREEN_API __attribute__ ((visibility("default")))
 #else
-#	define PHP_SQREEN_API
+#   define PHP_SQREEN_API
 #endif
 
 #ifdef ZTS
@@ -40,20 +40,20 @@ extern zend_module_entry sqreen_module_entry;
 #endif
 
 typedef struct _overloading_table {
-	const char *fname;
-	const char *overloading_fname;
-	void (*handler)(INTERNAL_FUNCTION_PARAMETERS);
-	void (*overloading_handler)(INTERNAL_FUNCTION_PARAMETERS);
+    const char    *fname;
+    const char    *overloading_fname;
+    zend_function *zf;
+    void         (*handler)(INTERNAL_FUNCTION_PARAMETERS);
+    void         (*overloading_handler)(INTERNAL_FUNCTION_PARAMETERS);
 } overloading_table;
 
-/*
-  	Declare any global variables you may need between the BEGIN
-	and END macros here:
+/*  Declare any global variables you may need between the BEGIN
+    and END macros here:
 */
 ZEND_BEGIN_MODULE_GLOBALS(sqreen)
-    zend_long  enable;
+    zend_long          enable;
+    overloading_table *overloading_func_table;
 ZEND_END_MODULE_GLOBALS(sqreen)
-
 
 /* Always refer to the globals in your function as SQREEN_G(variable).
    You are encouraged to rename these macros something shorter, see
@@ -69,7 +69,7 @@ PHP_FUNCTION(sqreenon);
 PHP_FUNCTION(sqreenoff);
 PHP_NAMED_FUNCTION(sqreen_fopen);
 
-#endif	/* PHP_SQREEN_H */
+#endif  /* PHP_SQREEN_H */
 
 
 /*

@@ -31,5 +31,5 @@ $infile = fopen("test.text", "r"); // or die("Unable to open file!");
 ?>
 --EXPECT--
 sqreen extension is available
-fopen(test.text, r[, 0, 0])
-fopen(test.text, z[, 0, 0])
+fopen('test.text', 'r'[, 0, 0])
+fopen('test.text', 'z'[, 0, 0])
